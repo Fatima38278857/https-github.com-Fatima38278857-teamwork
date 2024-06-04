@@ -8,7 +8,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
-public class UpdateUser {
+@Schema(name = "UpdateUser")
+public class UpdateUserDTO {
     @Size(min = 3, max = 10)
     @Schema(description = "имя пользователя")
     private String firstName;

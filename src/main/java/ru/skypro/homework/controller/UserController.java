@@ -11,8 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.NewPassword;
-import ru.skypro.homework.dto.UpdateUser;
+import ru.skypro.homework.dto.NewPasswordDTO;
+import ru.skypro.homework.dto.UpdateUserDTO;
 import ru.skypro.homework.dto.UserDto;
 
 @Slf4j
@@ -30,7 +30,7 @@ public class UserController {
             @ApiResponse(responseCode = "401"),
             @ApiResponse(responseCode = "403")
     })
-    public ResponseEntity<Void> setPassword(@RequestBody(required = false) NewPassword newPassword) {
+    public ResponseEntity<Void> setPassword(@RequestBody(required = false) NewPasswordDTO newPasswordDTO) {
         log.info("Method setPassword() in UserController is used");
         return ResponseEntity.ok().build();
     }
@@ -52,7 +52,7 @@ public class UserController {
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "401", content = @Content)
     })
-    public ResponseEntity<UpdateUser> updateUser(@RequestBody(required = false) UpdateUser user) {
+    public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody(required = false) UpdateUserDTO user) {
         log.info("Method updateUser() in UserController is used");
         return ResponseEntity.ok().build();
     }
