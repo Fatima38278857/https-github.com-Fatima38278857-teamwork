@@ -1,6 +1,12 @@
 package ru.skypro.homework.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +24,7 @@ import ru.skypro.homework.service.AdService;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
@@ -26,12 +33,46 @@ public class AdController {
 
     private final AdService adService;
 
+    @Operation(
+            tags = "Объявления",
+            summary = "Получение всех объявлений",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "OK",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AdsDTO.class)
+                            )
+                    )
+            }
+    )
 
     @GetMapping
     // Получение всех объявлений
     public ResponseEntity<AdsDTO> getAllAds() {
         return ResponseEntity.ok(adService.getAllAds());
     }
+
+    @Operation(
+            tags = "Объявления",
+            summary = "Добавление объявление",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Created",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AdDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content()
+                    )
+            }
+    )
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -46,6 +87,31 @@ public class AdController {
         }
         else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+
+    @Operation(
+            tags = "Объявления",
+            summary = "Получение информации об объявлении",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "OK",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ExtendedAdDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content()
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not found",
+                            content = @Content()
+                    )
+            }
+    )
 
     @GetMapping("{id}")
     // Получение информации об объявлении (возможные ответы 200, 401, 404)
@@ -62,9 +128,31 @@ public class AdController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @Operation(
+            tags = "Объявления",
+            summary = "Удаление объявления",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "No Content",
+                            content = @Content()
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content()
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not found",
+                            content = @Content()
+                    )
+            }
+    )
     @PreAuthorize("hasRole('ADMIN') or @adServiceImpl.findAdById(id).author.email.equals(authentication.name)")
     @DeleteMapping("{id}")
-    // Удаление объявления (возможные ответы 204 No Content, 401 Unauthorized, 403 Forbidden, 404 Not found)
+    // Удаление объявления (возможные ответы 204 No Content, 401 Unauthorized, 404 Not found)
     public ResponseEntity<Optional> removeAd(@PathVariable int id, Authentication authentication) {
         if (authentication.isAuthenticated()) {
             if (adService.getAds(id) == null) {
@@ -74,13 +162,36 @@ public class AdController {
                 adService.removeAd(id);
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }
-            // а что проверяем на 403 ошибку?? права пользователя?
         }
         else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
+    @Operation(
+            tags = "Объявления",
+            summary = "Обновление информации об объявлении",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "OK",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AdDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content()
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not found",
+                            content = @Content()
+                    )
+            }
+    )
     @PreAuthorize("hasRole('ADMIN') or adServiceImpl.findAdById(id).author.email.equals(authentication.name)")
     @PatchMapping("{id}")
     // Обновление информации об объявлении
@@ -101,6 +212,25 @@ public class AdController {
         }
     }
 
+    @Operation(
+            tags = "Объявления",
+            summary = "Получение объявлений авторизованного пользователя",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "OK",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AdsDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content()
+                    )
+            }
+    )
     @PreAuthorize("hasRole('USER')")
     @GetMapping("me")
     // Получение объявлений авторизованного пользователя (200 или 401)
@@ -112,6 +242,35 @@ public class AdController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+    @Operation(
+            tags = "Объявления",
+            summary = "Обновление картинки объявления",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "OK",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE,
+                                    array = @ArraySchema(schema = @Schema(implementation = byte[].class))
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content()
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Forbidden",
+                            content = @Content()
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not found",
+                            content = @Content()
+                    )
+            }
+    )
     @PreAuthorize("hasRole('ADMIN') or adServiceImpl.findAdById(id).author.email.equals(authentication.name)")
     @PatchMapping(value = "{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     // Обновление картинки объявления (статусы 200, 403, 401, 404)
