@@ -1,5 +1,6 @@
 package ru.skypro.homework.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.io.IOException;
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
 @RequestMapping("image")
+@Hidden
 public class ImageController {
 
     private final ImageServiceImpl imageService;

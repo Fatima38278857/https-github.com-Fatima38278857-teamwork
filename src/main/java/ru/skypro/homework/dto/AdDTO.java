@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Schema(name = "Ad")
 public class AdDTO {
     @Schema(description = "id автора объявления")
     private int author;

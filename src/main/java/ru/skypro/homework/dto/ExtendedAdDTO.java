@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Schema(name = "ExtendedAd")
 public class ExtendedAdDTO {
     @Schema(description = "id объявления")
     private int pk;
