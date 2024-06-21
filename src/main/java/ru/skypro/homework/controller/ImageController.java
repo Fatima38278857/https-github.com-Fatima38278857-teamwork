@@ -28,6 +28,7 @@ public class ImageController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadImage(@RequestParam MultipartFile image) throws IOException {
+        log.info("uploadImage in ImageController is user");
         imageService.uploadImage(image);
         return ResponseEntity.ok().build();
 
@@ -36,7 +37,7 @@ public class ImageController {
 
     @GetMapping("{id}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable Long id) {
-        log.info("Method downloadImage() in ImageController is used");
+        log.info("downloadImage() in ImageController is used");
         Image image = imageService.getImage(id);
         if (image != null) {
             HttpHeaders headers = new HttpHeaders();
