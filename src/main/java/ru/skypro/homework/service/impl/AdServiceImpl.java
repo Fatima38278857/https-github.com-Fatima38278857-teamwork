@@ -19,6 +19,7 @@ import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,6 +68,7 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
+    @Transactional
     public void removeAd(int id) {
         adRepository.deleteById(id);
     }
