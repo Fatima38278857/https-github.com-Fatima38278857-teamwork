@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public void updateUserImage(MultipartFile image) throws IOException {
         if (image != null) {
             UserEntity user = currentUser();
-            imageService.uploadImage(image);
+            user.setImage(imageService.uploadImage(image));
             userRepository.save(user);
         }
     }
