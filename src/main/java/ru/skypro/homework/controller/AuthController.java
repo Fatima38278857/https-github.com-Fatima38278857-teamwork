@@ -1,5 +1,6 @@
 package ru.skypro.homework.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,6 +25,7 @@ public class AuthController {
     private final AuthService authService;
 
     @Tag(name = "Регистрация")
+    @Operation(summary = "Регистрация пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201"),
             @ApiResponse(responseCode = "400")
@@ -39,12 +41,13 @@ public class AuthController {
     }
 
     @Tag(name = "Авторизация")
+    @Operation(summary = "Авторизация пользователя")
     @PostMapping("/login")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "401")
     })
-    public ResponseEntity<Void> login(@RequestBody Login login) {
+    public ResponseEntity<Void> login(@RequestBody(required = false) Login login) {
         log.info("login in AuthController is used");
         if (authService.login(login.getUsername(), login.getPassword())) {
             return ResponseEntity.ok().build();

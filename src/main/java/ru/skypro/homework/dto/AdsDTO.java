@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@Schema(name = "Ads")
 public class AdsDTO {
     @Schema(description = "общее количество объявлений")
     private int count;

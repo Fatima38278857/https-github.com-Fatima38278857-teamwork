@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 @Data
+@Schema(name = "CreateOrUpdateAd")
 public class CreateOrUpdateAdDTO {
     @Size(min = 4, max = 32)
     @Schema(description = "заголовок объявления")
