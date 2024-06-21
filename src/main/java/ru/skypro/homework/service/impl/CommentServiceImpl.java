@@ -1,27 +1,28 @@
 package ru.skypro.homework.service.impl;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.dto.UserDto;
+import ru.skypro.homework.entity.Ad;
 import ru.skypro.homework.entity.CommentEntity;
-import ru.skypro.homework.entity.UserEntity;
+import ru.skypro.homework.exception.AdNotFoundException;
+import ru.skypro.homework.exception.NotFoundCommentException;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.CommentRepository;
-import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.UserService;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -39,16 +40,18 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDTO> getAllComment(Integer adId) {
-        List<CommentEntity> comment = adRepository.findById(adId).get().getComments();
-        List<CommentDTO> collect = comment.stream().map(a -> commentMapper.toDto(a))
+        List<CommentEntity> comment = commentRepository.findAll();
+        return comment.stream().map(a -> commentMapper.toDto(a))
                 .collect(Collectors.toList());
-        return collect;
     }
 
     @Override
-    public CommentDTO createComment(Integer adId, CommentEntity comment) {
+    public CommentDTO createComment(Integer adId, CommentEntity comment, Authentication authentication) {
         UserDto user = userService.getUser();
-
+        Optional<Ad> adById = adRepository.findById(adId);
+        if (adById.isEmpty()) {
+            throw new AdNotFoundException("ad not found");
+        }else{
         LocalDateTime localDateTime = LocalDateTime.now();
 
         ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
@@ -56,22 +59,32 @@ public class CommentServiceImpl implements CommentService {
         comment.setCreatedAt(date);
         comment.setAuthor(user.getId());
         comment.setAuthorFirstName(user.getFirstName());
-        comment.setAd(adRepository.findById(adId).get());
+        comment.setAd(adById.get());
         comment.setAuthorImage(user.getImage());
 
-        commentRepository.save(comment);
-        return commentMapper.toDto(comment);
+        return commentMapper.toDto(commentRepository.save(comment));
+        }
     }
 
     @Override
     public void deleteComment(Integer adId, Integer commentId) {
-        adRepository.findById(adId).get().getComments().remove(commentId);
+        commentRepository.deleteCommentByAd_IdAndId(adId,commentId);
     }
 
     @Override
     public CommentDTO patchCommentId(Integer adId, Integer commentId, CreateOrUpdateComment createOrUpdateComment, Authentication authentication) {
-        CommentEntity commentEntity = adRepository.findById(adId).get().getComments().get(commentId);
-        commentEntity.setText(createOrUpdateComment.getText());
-        return commentMapper.toDto(commentRepository.save(commentEntity));
+
+        UserDto userDto = userService.getUser();
+        Integer userId = userDto.getId();
+        List<CommentEntity> commentList = commentRepository.findAllCommentByAdIdAndAuthorIdAndIdComment(adId, userId, commentId);
+        CommentEntity comment = commentList.get(0);
+        if (comment == null) {
+            throw new NotFoundCommentException("NOT_FOUND_EXCEPTION_DESCRIPTION");
+        } else {
+            comment.setText(createOrUpdateComment.getText());
+
+            commentRepository.save(comment);
+            return commentMapper.toDto(comment);
+        }
     }
 }
