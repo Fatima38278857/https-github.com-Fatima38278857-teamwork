@@ -10,7 +10,7 @@ import java.util.List;
 public interface CommentService {
     List<CommentDTO> getAllComment(Integer adId);
 
-    CommentDTO createComment(Integer adId, CommentEntity comment);
+    CommentDTO createComment(Integer adId, CommentEntity comment, Authentication authentication);
 
     void deleteComment(Integer adId, Integer commentId);
 
