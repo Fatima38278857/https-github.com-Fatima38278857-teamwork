@@ -68,7 +68,6 @@ class ImageControllerTest {
 
         when(imageService.getImage(imageId)).thenReturn(null);
 
-
         ResponseEntity<byte[]> response = imageController.downloadImage(imageId);
 
         verify(imageService, times(1)).getImage(imageId);
