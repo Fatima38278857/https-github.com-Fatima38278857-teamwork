@@ -2,7 +2,6 @@ package ru.skypro.homework.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
 @Data
 public class CommentDTO {
     private Integer pk;
@@ -15,5 +14,4 @@ public class CommentDTO {
     public CommentDTO(String text) {
         this.text = text;
     }
-
 }

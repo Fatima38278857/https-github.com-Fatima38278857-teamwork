@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +27,7 @@ public class Ad {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity author;
-    @OneToMany(mappedBy="ad")
+    @OneToMany(mappedBy = "ad")
     @JsonIgnore
     private List<CommentEntity> comments;
 

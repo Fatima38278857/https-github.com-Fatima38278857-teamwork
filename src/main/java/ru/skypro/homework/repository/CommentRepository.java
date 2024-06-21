@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
-    void deleteCommentByAd_IdAndId(Integer adId, Integer id);
+    void deleteCommentByAdIdAndPk(Integer adId, Integer pk);
 
-    @Query(value = "SELECT c FROM Comment c WHERE c.ad.id = :adId AND c.author = :idAuthor AND c.id = :id")
-    List<CommentEntity> findAllCommentByAdIdAndAuthorIdAndIdComment(Integer adId, Integer idAuthor, Integer id);
+    @Query(value = "SELECT c FROM CommentEntity c WHERE c.ad.id = :adId AND c.author = :authorId AND c.pk = :pk")
+    List<CommentEntity> findAllCommentByAdIdAndAuthorIdAndIdComment(Integer adId, Integer authorId, Integer pk);
 }

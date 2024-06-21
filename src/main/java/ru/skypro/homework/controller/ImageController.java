@@ -11,11 +11,12 @@ import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.service.impl.ImageServiceImpl;
 
 import java.io.IOException;
+
 @Slf4j
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
 @RequestMapping("image")
-public class ImageController{
+public class ImageController {
 
     private final ImageServiceImpl imageService;
 
