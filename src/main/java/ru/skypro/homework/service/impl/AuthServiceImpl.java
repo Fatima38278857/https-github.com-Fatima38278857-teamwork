@@ -8,7 +8,6 @@ import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.security.MyUserDetailsService;
-import ru.skypro.homework.security.MyUserPrincipal;
 import ru.skypro.homework.service.AuthService;
 import ru.skypro.homework.service.UserService;
 

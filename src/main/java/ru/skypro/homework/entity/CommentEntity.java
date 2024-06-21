@@ -1,10 +1,11 @@
 package ru.skypro.homework.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -15,14 +16,14 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pk;
     private Integer author;
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private Long createdAt;
     private String authorFirstName;
     private String authorImage;
     private String text;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "ad_id",nullable = false)
+    @JoinColumn(name = "ad_id", nullable = false)
     private Ad ad;
 
     public CommentEntity(Integer author, Long createdAt, String authorFirstName, String authorImage, String text) {
@@ -32,5 +33,4 @@ public class CommentEntity {
         this.authorImage = authorImage;
         this.text = text;
     }
-
 }

@@ -11,7 +11,6 @@ import ru.skypro.homework.dto.CreateOrUpdateAdDTO;
 import ru.skypro.homework.dto.ExtendedAdDTO;
 import ru.skypro.homework.entity.Ad;
 import ru.skypro.homework.entity.CommentEntity;
-import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.exception.AdNotFoundException;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
@@ -34,7 +33,6 @@ public class AdServiceImpl implements AdService {
     private final UserService userService;
     private final ImageService imageService;
     private final UserRepository userRepository;
-
 
     @Override
     public AdsDTO getAllAds() {
@@ -62,7 +60,6 @@ public class AdServiceImpl implements AdService {
          */
         return null;
     }
-
 
     @Override
     public ExtendedAdDTO getAds(int id) {

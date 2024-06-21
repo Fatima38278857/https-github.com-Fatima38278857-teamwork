@@ -30,14 +30,10 @@ public class UserController {
 
     @Operation(summary = "Обновление пароля")
     @PostMapping("/set_password")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "401"),
-            @ApiResponse(responseCode = "403")
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200"), @ApiResponse(responseCode = "401"), @ApiResponse(responseCode = "403")})
     public ResponseEntity<Void> setPassword(@RequestBody(required = false) NewPassword newPassword) {
         log.info("Method setPassword() in UserController is used");
-        if (userService.setPassword(newPassword)){
+        if (userService.setPassword(newPassword)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -45,24 +41,19 @@ public class UserController {
 
     @Operation(summary = "Получение информации об авторизованном пользователе")
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "401", content = @Content)
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200"), @ApiResponse(responseCode = "401", content = @Content)})
     public ResponseEntity<UserDto> getUser() {
         log.info("Method getUser() in UserController is used");
         UserDto user = userService.getUser();
-        if (user!= null) {
+        if (user != null) {
             return ResponseEntity.ok(user);
-        } return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @Operation(summary = "Обновление информации об авторизованном пользователе")
     @PatchMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "401", content = @Content)
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200"), @ApiResponse(responseCode = "401", content = @Content)})
     public ResponseEntity<UpdateUser> updateUser(@RequestBody(required = false) UpdateUser user) {
         log.info("Method updateUser() in UserController is used");
         return ResponseEntity.ok(userService.updateUser(user));
@@ -70,10 +61,7 @@ public class UserController {
 
     @Operation(summary = "Обновление аватара авторизованного пользователя")
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "401")
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200"), @ApiResponse(responseCode = "401")})
     public ResponseEntity<Void> updateUserImage(@RequestParam MultipartFile image) {
         log.info("Method updateUserImage() in UserController is used");
         try {

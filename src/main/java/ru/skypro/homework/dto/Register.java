@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
 @Data
 public class Register {
@@ -25,8 +24,6 @@ public class Register {
     @Schema(description = "телефон пользователя")
     private String phone;
     // todo enum
-    @Schema(description = "роль ползователя")
+    @Schema(description = "роль пользователя")
     private Role role;
-
-
 }
