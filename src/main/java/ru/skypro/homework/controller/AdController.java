@@ -35,6 +35,7 @@ public class AdController {
     @GetMapping
     // Получение всех объявлений
     public ResponseEntity<AdsDTO> getAllAds() {
+        log.info("getAllAds in AdController is used");
         return ResponseEntity.ok(adService.getAllAds());
     }
 
