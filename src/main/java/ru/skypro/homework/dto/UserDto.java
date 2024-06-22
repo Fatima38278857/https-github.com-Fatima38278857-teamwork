@@ -20,4 +20,12 @@ public class UserDto {
     private Role role;
     @Schema(description = "ссылка на аватар пользователя")
     private String image;
+
+
+    public UserDto() {
+    }
+
+    public UserDto(int i, String john, String doe, String mail, String image) {
+    }
 }
+
