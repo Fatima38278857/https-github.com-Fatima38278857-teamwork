@@ -15,22 +15,21 @@ public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pk;
-    private Integer author;
     @Column(name = "created_at")
     private Long createdAt;
-    private String authorFirstName;
-    private String authorImage;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private UserEntity author;
     private String text;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "ad_id", nullable = false)
     private Ad ad;
 
-    public CommentEntity(Integer author, Long createdAt, String authorFirstName, String authorImage, String text) {
-        this.author = author;
+    public CommentEntity(Long createdAt, UserEntity author, String text, Ad ad) {
         this.createdAt = createdAt;
-        this.authorFirstName = authorFirstName;
-        this.authorImage = authorImage;
+        this.author = author;
         this.text = text;
+        this.ad = ad;
     }
 }
