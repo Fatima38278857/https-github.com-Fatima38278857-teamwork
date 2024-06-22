@@ -8,6 +8,7 @@ import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.Ad;
 import ru.skypro.homework.entity.CommentEntity;
+import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.exception.AdNotFoundException;
 import ru.skypro.homework.exception.NotFoundCommentException;
 import ru.skypro.homework.mapper.CommentMapper;
@@ -48,21 +49,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDTO createComment(Integer adId, CommentEntity comment) {
-        UserDto user = userService.getUser();
+        UserEntity user = userService.getUser(userService.getUser().getEmail());
         Optional<Ad> adById = adRepository.findById(adId);
         if (adById.isEmpty()) {
             throw new AdNotFoundException("ad not found");
         } else {
             LocalDateTime localDateTime = LocalDateTime.now();
-
             ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
             long date = zdt.toInstant().toEpochMilli();
             comment.setCreatedAt(date);
-            comment.setAuthor(user.getId());
-            comment.setAuthorFirstName(user.getFirstName());
+            comment.setAuthor(user);
             comment.setAd(adById.get());
-            comment.setAuthorImage(user.getImage());
-
             return commentMapper.toDto(commentRepository.save(comment));
         }
     }

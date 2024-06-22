@@ -25,7 +25,7 @@ public class Ad {
     private String title;
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "author_id")
     private UserEntity author;
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
