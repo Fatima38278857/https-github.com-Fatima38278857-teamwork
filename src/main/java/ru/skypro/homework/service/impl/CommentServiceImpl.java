@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDTO> getAllComment(Integer adId) {
-        List<CommentEntity> comment = commentRepository.findAll();
+        List<CommentEntity> comment = commentRepository.findAllCommentByAdId(adId);
         return comment.stream().map(commentMapper::toDto)
                 .collect(Collectors.toList());
     }
