@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping("/set_password")
     @ApiResponses(value = {@ApiResponse(responseCode = "200"), @ApiResponse(responseCode = "401"), @ApiResponse(responseCode = "403")})
     public ResponseEntity<Void> setPassword(@RequestBody(required = false) NewPassword newPassword) {
-        log.info("setPassword() in UserController is used");
+        log.info("setPassword in UserController is used");
         if (userService.setPassword(newPassword)) {
             return ResponseEntity.ok().build();
         }
@@ -43,7 +43,7 @@ public class UserController {
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses(value = {@ApiResponse(responseCode = "200"), @ApiResponse(responseCode = "401", content = @Content)})
     public ResponseEntity<UserDto> getUser() {
-        log.info("getUser() in UserController is used");
+        log.info("getUser in UserController is used");
         UserDto user = userService.getUser();
         if (user != null) {
             return ResponseEntity.ok(user);
@@ -55,7 +55,7 @@ public class UserController {
     @PatchMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses(value = {@ApiResponse(responseCode = "200"), @ApiResponse(responseCode = "401", content = @Content)})
     public ResponseEntity<UpdateUser> updateUser(@RequestBody(required = false) UpdateUser user) {
-        log.info("updateUser() in UserController is used");
+        log.info("updateUser in UserController is used");
         return ResponseEntity.ok(userService.updateUser(user));
     }
 
@@ -63,7 +63,7 @@ public class UserController {
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiResponses(value = {@ApiResponse(responseCode = "200"), @ApiResponse(responseCode = "401")})
     public ResponseEntity<Void> updateUserImage(@RequestParam MultipartFile image) {
-        log.info("updateUserImage() in UserController is used");
+        log.info("updateUserImage in UserController is used");
         try {
             userService.updateUserImage(image);
         } catch (IOException e) {

@@ -37,7 +37,7 @@ public class ImageController {
 
     @GetMapping("{id}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable Long id) {
-        log.info("downloadImage() in ImageController is used");
+        log.info("downloadImage in ImageController is used");
         Image image = imageService.getImage(id);
         if (image != null) {
             HttpHeaders headers = new HttpHeaders();
