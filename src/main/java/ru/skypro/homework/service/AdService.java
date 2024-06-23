@@ -5,6 +5,7 @@ import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.dto.AdsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateAdDTO;
 import ru.skypro.homework.dto.ExtendedAdDTO;
+import ru.skypro.homework.entity.CommentEntity;
 
 public interface AdService {
 
@@ -12,7 +13,7 @@ public interface AdService {
     AdsDTO getAllAds();
 
     // Добавление объявления. AddAd required: image, properties
-    AdDTO addAd(MultipartFile image, CreateOrUpdateAdDTO properties);
+    AdDTO addAd(MultipartFile image, CreateOrUpdateAdDTO properties, String email);
 
     // Получение информации об объявлении, getAds, параметр - id
     ExtendedAdDTO getAds(int id);
@@ -25,15 +26,11 @@ public interface AdService {
 
     // Получение объявлений авторизованного пользователя, getAdsMe.
     // Проверка авторизации пользователя по логину (email), иначе - 401 ошибка
-    AdsDTO getAdsMe(String email);
+    AdsDTO getAdsMe();
 
     // Обновление картинки объявления updateImage, параметр - id,
     // requestBody - multipart required image, type - String
-    String [] updateImage (int id, MultipartFile image);
+    String[] updateImage(int id, MultipartFile image);
 
-
-
-
-
-
+    CommentEntity getCommentByID(Integer id);
 }

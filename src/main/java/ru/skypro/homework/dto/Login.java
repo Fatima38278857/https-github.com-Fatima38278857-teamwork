@@ -13,5 +13,4 @@ public class Login {
     @Size(min = 4, max = 32)
     @Schema(description = "логин")
     private String username;
-
 }

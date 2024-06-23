@@ -1,9 +1,12 @@
 package ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
+@Schema(name = "Ad")
 public class AdDTO {
     @Schema(description = "id автора объявления")
     private int author;

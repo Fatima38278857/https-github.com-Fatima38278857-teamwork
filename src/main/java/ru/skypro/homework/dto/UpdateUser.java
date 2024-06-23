@@ -1,6 +1,5 @@
 package ru.skypro.homework.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -16,6 +15,6 @@ public class UpdateUser {
     @Schema(description = "фамилия пользователя")
     private String lastName;
     @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}")
-    @JsonProperty("телефон пользователя")
+    @Schema(description = "телефон пользователя")
     private String phone;
 }
