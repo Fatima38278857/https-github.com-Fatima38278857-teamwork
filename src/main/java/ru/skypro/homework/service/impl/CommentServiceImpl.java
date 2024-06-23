@@ -72,15 +72,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDTO patchCommentId(Integer adId, Integer commentId, CreateOrUpdateComment createOrUpdateComment) {
-        UserDto userDto = userService.getUser();
-        Integer authorId = userDto.getId();
-        List<CommentEntity> commentList = commentRepository.findAllCommentByAdIdAndAuthorIdAndIdComment(adId, authorId, commentId);
+        List<CommentEntity> commentList = commentRepository.findAllCommentByAdIdAndCommentId(adId, commentId);
         CommentEntity comment = commentList.get(0);
         if (comment == null) {
             throw new NotFoundCommentException("NOT_FOUND_EXCEPTION_DESCRIPTION");
         } else {
             comment.setText(createOrUpdateComment.getText());
-
             commentRepository.save(comment);
             return commentMapper.toDto(comment);
         }
