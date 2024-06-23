@@ -79,7 +79,7 @@ public class CommentController {
             @ApiResponse(responseCode = "401", content = @Content),
             @ApiResponse(responseCode = "403", content = @Content),
             @ApiResponse(responseCode = "404", content = @Content)})
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize("hasRole('ADMIN') or @adServiceImpl.findById(id).author.email.equals(authentication.name)")
     @PatchMapping(value = "{adId}/comments/{commentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Integer adId, @PathVariable Integer commentId, @RequestBody(required = false) CreateOrUpdateComment comment, Authentication authentication) {
         log.info("updateComment in CommentController is used");
